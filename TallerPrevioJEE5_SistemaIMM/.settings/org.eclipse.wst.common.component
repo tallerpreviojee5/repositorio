@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="TallerPrevioJEE5_SistemaIMM">
+        <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
+        <wb-resource deploy-path="/WEB-INF/classes" source-path="/JavaSource"/>
+        <property name="context-root" value="TallerPrevioJEE5_SistemaIMM"/>
+        <property name="java-output-path" value="/TallerPrevioJEE5_SistemaIMM/WebContent/WEB-INF/classes"/>
+    </wb-module>
+</project-modules>
