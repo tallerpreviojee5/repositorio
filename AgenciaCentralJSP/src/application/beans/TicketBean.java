@@ -20,7 +20,7 @@ public class TicketBean {
 	}
 
 	public Date getFechaInicioServicio() {
-		return fechaInicioServicio;
+		return  fechaInicioServicio;
 	}
 
 	public void setFechaInicioServicio(Date fechaInicioServicio) {
