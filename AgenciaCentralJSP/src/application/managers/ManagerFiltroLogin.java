@@ -44,7 +44,7 @@ public class ManagerFiltroLogin implements Filter {
 		}
 		else{
 			String U = R.getRequestURI();
-			boolean intento_login = U.contains("login.html")|| U.contains("/ManagerLoginReportes");
+			boolean intento_login = U.contains("login.html")|| U.contains("ManagerLoginReportes");
 			if (intento_login){
 				chain.doFilter(request, response);
 			}

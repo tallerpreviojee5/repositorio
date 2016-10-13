@@ -6,76 +6,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Date;
 
 import application.beans.TicketBean;
 import application.beans.TicketBean.Estado;
 import application.managers.ManagerPersistencia;
-
-/*public class PersistenciaTickets {
-	
-	private static final String URL = "jdbc:mysql://127.0.0.1:3306/agenciadb";
-	private static final String USERNAME = "root";
-	private static final String PASSWORD = "root";
-	private static final String DRIVER = "com.mysql.jdbc.Driver";
-	
-
- 	
-	public boolean alta_ticket_BD(TicketBean ticketBean) throws Exception{
-		
-		boolean resultado = false;
-		
-		long nroTicket = ticketBean.getNroTicket();
-		String matricula = ticketBean.getMatricula();
-		
-		Date fechaVenta = ticketBean.getFechaHoraVenta();
-		Date fechaInicioServicio = ticketBean.getFechaInicioServicio();
-		java.sql.Date sqlFechaVenta = new java.sql.Date(fechaVenta.getTime());
-		java.sql.Date sqlFechaInicioServicio = new java.sql.Date(fechaInicioServicio.getTime());
-		System.out.println("Fecha Venta: "+ fechaVenta.toString());
-		long importe = ticketBean.getImporte();
-		long idTerminal = ticketBean.getIdTerminal();
-		System.out.println("IdTerminal: " + idTerminal);
-		Estado estado = ticketBean.getEstado();
-		
-		
-		try {
-			
-			Class.forName(DRIVER);
-			Connection con = DriverManager.getConnection(URL, USERNAME, PASSWORD);
-			Statement stmt = con.createStatement();
-			
-			String Q = "INSERT INTO tickets (nroTicket,matricula,fechaHoraVenta, fechaInicio, importe, idTerminal,estado) values("+
-					"'"+ nroTicket +"',"+
-					"'"+ matricula +"',"+
-					"'"+ sqlFechaVenta+"',"+
-					"'"+ sqlFechaInicioServicio+"',"+
-					"'"+ importe+   "',"+
-//					"'"+ idAgencia+ "',"+
-					"'"+ idTerminal+ "',"+
-					"'"+ estado+    "')";
-			System.out.println("Guardando Ticket: " +Q);
-			int i = stmt.executeUpdate(Q);
-			
-			stmt.close();
-			con.close();
-			// Verificar Ingreso a DB OK
-			resultado = true;
-		}
-		catch(SQLException e) {
-			 System.out.println("SQLException: "+e.getMessage());
-			 }
-		catch (ClassNotFoundException e) {
-			System.out.println("ClassNotFoundException: "+e.getMessage());
-			}
-		catch(Exception e) {
-			System.out.println("Exception: "+e.getMessage());
-			}
-		
-		return resultado;
-		
-	}
-}*/
 
 public class PersistenciaTickets {
 	
@@ -140,6 +76,44 @@ public class PersistenciaTickets {
 		
 		return resultado;
 		
+	}
+	public ArrayList <TicketBean> lista_ticket_BD(){
+		ArrayList <TicketBean> resultado = new ArrayList<TicketBean>();
+		String columnas = "nroTicket, matricula, fechaHoraVenta, importe, idTerminal, estado";
+		String tabla = "tickets";
+		String SQL= "SELECT "+ columnas + " FROM " + tabla;
+		System.out.println("Consulta a base: "+ SQL);
+		try {
+			pstmt = connection.prepareStatement(SQL);
+			ResultSet rs = pstmt.executeQuery(SQL);
+			while (rs.next()) {
+				TicketBean T = new TicketBean();
+				System.out.println("nroTicket "+ rs.getLong("nroTicket"));
+				T.setNroTicket(rs.getLong("nroTicket"));
+				
+				System.out.println("matricula "+ rs.getString("matricula"));
+				T.setMatricula(rs.getString("matricula"));
+				
+				System.out.println("FechaHoraVenta "+ rs.getDate("fechaHoraVenta"));
+				T.setFechaHoraVenta(rs.getDate("fechaHoraVenta"));
+				
+				System.out.println("importe "+ rs.getLong("importe"));
+				T.setImporte(rs.getLong("importe"));
+				
+				System.out.println("idTerminal "+ rs.getLong("idTerminal"));
+				T.setIdTerminal(rs.getLong("idTerminal"));
+				
+				System.out.println("estado "+ rs.getString("estado") );
+				Estado estado = Estado.valueOf(rs.getString("estado"));
+				T.setEstado(estado);
+				resultado.add(T);
+			}
+			connection.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return resultado;
 	}
 }
 

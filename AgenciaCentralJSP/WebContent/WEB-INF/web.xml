@@ -9,18 +9,37 @@
     <servlet-class>application.managers.ManagerLoginReportes</servlet-class>
   </servlet>
   <servlet>
+    <servlet-name>ManagerReportes</servlet-name>
+    <servlet-class>application.managers.ManagerReportes</servlet-class>
+  </servlet>
+  <servlet>
     <servlet-name>ManagerVentasAgencia</servlet-name>
     <servlet-class>application.managers.ManagerVentasAgencia</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
+  <servlet>
+    <servlet-name>ReporteVentasDia</servlet-name>
+    <servlet-class>application.reportes.ReporteVentasDia</servlet-class>
+  </servlet>
+  
   <servlet-mapping>
     <servlet-name>ManagerLoginReportes</servlet-name>
     <url-pattern>/ManagerLoginReportes</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>ManagerVentasAgencia</servlet-name>
-    <url-pattern>/managerVentasAgencia</url-pattern>
+    <servlet-name>ManagerReportes</servlet-name>
+    <url-pattern>/ManagerReportes</url-pattern>
   </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ManagerVentasAgencia</servlet-name>
+    <url-pattern>/ManagerVentasAgencia</url-pattern>
+  </servlet-mapping>
+  
+  <servlet-mapping>
+    <servlet-name>ReporteVentasDia</servlet-name>
+    <url-pattern>/ReporteVentasDia</url-pattern>
+  </servlet-mapping>
+  
   <filter>
     <filter-name>ManagerFiltroLogin</filter-name>
     <filter-class>application.managers.ManagerFiltroLogin</filter-class>
