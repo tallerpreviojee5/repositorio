@@ -88,6 +88,7 @@ public class PersistenciaTickets {
 			ResultSet rs = pstmt.executeQuery(SQL);
 			while (rs.next()) {
 				TicketBean T = new TicketBean();
+				System.out.println("=============================================");
 				System.out.println("nroTicket "+ rs.getLong("nroTicket"));
 				T.setNroTicket(rs.getLong("nroTicket"));
 				
@@ -105,6 +106,7 @@ public class PersistenciaTickets {
 				
 				System.out.println("estado "+ rs.getString("estado") );
 				Estado estado = Estado.valueOf(rs.getString("estado"));
+				System.out.println("=============================================");
 				T.setEstado(estado);
 				resultado.add(T);
 			}
