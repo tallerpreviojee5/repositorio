@@ -12,6 +12,7 @@ import javax.servlet.http.HttpSession;
 
 import application.beans.UsuarioBean;
 
+
 /**
  * Servlet implementation class ManagerLoginReportes
  */

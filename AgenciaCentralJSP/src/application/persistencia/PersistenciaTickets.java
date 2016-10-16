@@ -94,8 +94,8 @@ public class PersistenciaTickets {
 				System.out.println("matricula "+ rs.getString("matricula"));
 				T.setMatricula(rs.getString("matricula"));
 				
-				System.out.println("FechaHoraVenta "+ rs.getDate("fechaHoraVenta"));
-				T.setFechaHoraVenta(rs.getDate("fechaHoraVenta"));
+				System.out.println("fechaHoraVenta "+ rs.getTimestamp("fechaHoraVenta"));
+				T.setFechaHoraVenta(rs.getTimestamp("fechaHoraVenta"));
 				
 				System.out.println("importe "+ rs.getLong("importe"));
 				T.setImporte(rs.getLong("importe"));

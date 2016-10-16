@@ -71,9 +71,13 @@ public class ManagerReportes extends HttpServlet {
 		         }
 		         case "ventas_h":{
 		        	 System.out.println("Se desea reporte de ventas por hora");
-		    	     //RequestDispatcher rd = request.getRequestDispatcher("/alta_pelicula.html");
-		 			 //rd.forward(request, response);
-		        	 response.sendRedirect(request.getContextPath() + "/ventas_hora.jsp");
+		        	 PersistenciaTickets PT = new PersistenciaTickets();
+		        	 ArrayList <TicketBean> lista_tickets = new ArrayList<TicketBean>();
+		        	 lista_tickets = PT.lista_ticket_BD();
+		    		 HttpSession httpS = request.getSession();
+		    		 httpS.setAttribute("lista_tickets", lista_tickets);
+		    		 RequestDispatcher rd = request.getRequestDispatcher("/ventas_hora.jsp");
+		 			 rd.forward(request, response);
 		        	 break;
 		         }
 		         case "listado":{
