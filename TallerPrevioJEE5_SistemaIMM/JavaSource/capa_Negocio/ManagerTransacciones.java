@@ -6,7 +6,7 @@ import webserviceIMM.DatatypeVenta;
 
 public class ManagerTransacciones {
 	
-	//Singleton ManagerTransacciones
+	//Singleton ManagerTransacciones //comentario para prueba Git desde maquina de Hector 16/10/2016
 		private static ManagerTransacciones managerTransacciones;
 		private ManagerTransacciones(){
 			}
