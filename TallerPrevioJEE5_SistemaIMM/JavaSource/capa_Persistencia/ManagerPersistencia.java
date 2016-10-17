@@ -17,6 +17,8 @@ import javax.sql.DataSource;
 import webserviceIMM.DatatypeVenta;
 import capa_Negocio.ManagerTransacciones;
 import capa_Negocio.DatatypeAgencias;
+import capa_Negocio.DatatypeUsuarios;
+import modelo.Usuario;
 
 
 public class ManagerPersistencia {
@@ -31,6 +33,31 @@ public class ManagerPersistencia {
 		 }
 		 return managerPersistencia;
 	}
+	
+
+	
+	public boolean AutenticarUsuario(modelo.Usuario usuario){
+		Hashtable coleccion_usuarios = managerPersistencia.getColeccionUsuarios();
+		boolean ok = false;
+		if(coleccion_usuarios.containsKey(usuario.getNombre())){
+			DatatypeUsuarios datatypeUsuarios= (DatatypeUsuarios) coleccion_usuarios.get(usuario.getNombre());
+			String secreto_almacenado = datatypeUsuarios.getSecretoUsuario();
+			String secreto_ingresado = usuario.getSecreto();			
+			if (secreto_ingresado.equals(secreto_almacenado))
+		    	ok = true;
+					    
+		}
+		if(ok){
+			System.out.println("Usuario autenticado Nombre: " + usuario.getNombre() );			
+		}		
+		else
+		{
+			System.out.println("Fallo autenticacion Nombre: " + usuario.getNombre() );			
+		}	
+		return ok;
+	}
+		
+	
 	
 	
 	public boolean AutenticarAgencia(Long idAgencia, String secretoAgencia){
@@ -102,6 +129,55 @@ public class ManagerPersistencia {
 		}
 		return coleccion_agencias;
 	}
+	
+	
+	public Hashtable getColeccionUsuarios() {
+		Hashtable coleccion_usuarios = new Hashtable();
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			con=establecer_Conexion_Usuarios();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM usuarios");
+			ResultSetMetaData rsm = rs.getMetaData();
+			
+			String usuarioAdmin;
+			String secretoUsuario;
+					
+			while(rs.next()) {
+				
+				usuarioAdmin = rs.getString("nombre");
+				secretoUsuario = rs.getString("secreto");
+				DatatypeUsuarios datatype_usuarios = new DatatypeUsuarios(usuarioAdmin, secretoUsuario); 
+				coleccion_usuarios.put(usuarioAdmin, datatype_usuarios);
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+			
+		} catch(SQLException e) {
+			System.out.println("SQLException: "+e.getMessage());
+
+		} catch(Exception e) {
+			System.out.println("Exception: "+e.getMessage());
+			
+		}
+		finally {
+			try {
+				if (rs!=null) rs.close();
+				if (stmt!=null)	stmt.close();
+				if (con!=null) con.close();
+//				System.out.println("Recursos liberados correctamente luego de obtener la coleccion de alquileres");
+			} catch (SQLException e) {
+				System.out.println("Ocurrio un error al liberar los recursos luego de obtener la coleccion de alquileres");
+				e.printStackTrace();
+			}
+
+		}
+		return coleccion_usuarios;
+	}	
+	
 
 	
 	
@@ -165,6 +241,32 @@ public class ManagerPersistencia {
 //		}
 		return con;
 	}
+
+	
+public Connection establecer_Conexion_Usuarios(){
+		
+		Connection con=null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try{
+			InitialContext initialContext = new InitialContext();
+			DataSource ds = (DataSource) initialContext.lookup("java:/usuariosIMM_DS");
+			con = ds.getConnection();
+			System.out.println(con.toString());
+			System.out.println("***Conectado OK!!!***");
+		}catch (SQLException e){
+			System.out.println("Error al obtener la conexion: " + e.getMessage());
+		}catch (NamingException e1){
+			System.out.println("Error de NamingException: " + e1.getMessage() +"  "+ e1.toString());
+		}
+
+		return con;
+}
+	
+	
+	
+	
+	
 	
 public Connection establecer_Conexion_IMM(){
 		

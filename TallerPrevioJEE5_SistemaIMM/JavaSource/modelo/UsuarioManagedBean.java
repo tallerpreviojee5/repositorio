@@ -4,6 +4,8 @@ package modelo;
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.RequestScoped;
+
+import capa_Persistencia.ManagerPersistencia;
 import modelo.Usuario;
 
 @ManagedBean
@@ -23,10 +25,12 @@ public class UsuarioManagedBean {
 		return usuario;
 	}
 	
-	public String accion(){
+	public boolean accion(){
 		System.out.println("Usuario: " + usuario.getNombre());
 		System.out.println("Secreto: " + usuario.getSecreto());
-		return null; // por el momento sin regla de navegacion
+		ManagerPersistencia managerPersistencia = ManagerPersistencia.getInstance();
+		managerPersistencia.probarConexion();
+		return managerPersistencia.AutenticarUsuario(usuario);
 	}
 
 	public void setUsuario(Usuario usuario) {
