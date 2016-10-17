@@ -241,6 +241,38 @@ public Connection establecer_Conexion_IMM(){
 		return datatypeVenta;
 	}
 
-	
+public void cancelarTicket(long NroTicket){
+		
+		Connection connection = null;
+		PreparedStatement pstmt = null;
+				
+		String query = "UPDATE transacciones " +
+					   "SET Estado = 'CANCELADO' " +
+					   "WHERE NroTicket = ?";
+		
+		try{
+			connection = establecer_Conexion_IMM();
+			
+			pstmt = connection.prepareStatement(query);
+			
+			pstmt.setLong(1, NroTicket);
+		
+			pstmt.executeUpdate();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		finally{
+			try{
+				if(pstmt != null)
+					pstmt.close();
+				if (connection != null) 
+					connection.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+}	
 	
 }

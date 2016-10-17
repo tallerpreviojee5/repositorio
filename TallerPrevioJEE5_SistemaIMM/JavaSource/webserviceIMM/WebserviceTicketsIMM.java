@@ -10,5 +10,13 @@ public class WebserviceTicketsIMM {
 		ManagerTransacciones managerTransacciones = ManagerTransacciones.getInstance();
 		return managerTransacciones.Venta(dataTypeVenta);
 	}
+	
+	public void CancelarTicket(long NroTicket, long idAgencia, String secretoAgencia){
+		
+		ManagerTransacciones managerTransacciones = ManagerTransacciones.getInstance();
+		
+		managerTransacciones.cancelarTicket(NroTicket, idAgencia, secretoAgencia);
+		
+	}
 
 }

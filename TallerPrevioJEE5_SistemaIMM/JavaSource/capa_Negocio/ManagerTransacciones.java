@@ -55,4 +55,20 @@ public class ManagerTransacciones {
 		importe = minutos*12L;
 		return importe;
 	}
+	
+	public void cancelarTicket(long NroTicket, long idAgencia, String secretoAgencia){
+		
+		if(AutenticarAgencia(idAgencia, secretoAgencia)){
+			
+			ManagerPersistencia managerPersistencia = ManagerPersistencia.getInstance();
+			
+			try {
+				managerPersistencia.cancelarTicket(NroTicket);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		
+}	
+	
 }
