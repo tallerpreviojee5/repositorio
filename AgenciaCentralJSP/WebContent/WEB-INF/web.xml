@@ -21,7 +21,10 @@
     <servlet-name>ReporteVentasDia</servlet-name>
     <servlet-class>application.reportes.ReporteVentasDia</servlet-class>
   </servlet>
-  
+    <servlet>
+    <servlet-name>ReporteVentasFranja</servlet-name>
+    <servlet-class>application.reportes.ReporteVentasFranja</servlet-class>
+  </servlet>
   <servlet-mapping>
     <servlet-name>ManagerLoginReportes</servlet-name>
     <url-pattern>/ManagerLoginReportes</url-pattern>
@@ -34,12 +37,14 @@
     <servlet-name>ManagerVentasAgencia</servlet-name>
     <url-pattern>/ManagerVentasAgencia</url-pattern>
   </servlet-mapping>
-  
   <servlet-mapping>
     <servlet-name>ReporteVentasDia</servlet-name>
     <url-pattern>/ReporteVentasDia</url-pattern>
   </servlet-mapping>
-  
+    <servlet-mapping>
+    <servlet-name>ReporteVentasFranja</servlet-name>
+    <url-pattern>/ReporteVentasFranja</url-pattern>
+  </servlet-mapping>
   <filter>
     <filter-name>ManagerFiltroLogin</filter-name>
     <filter-class>application.managers.ManagerFiltroLogin</filter-class>

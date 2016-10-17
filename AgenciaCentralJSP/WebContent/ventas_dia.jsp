@@ -14,7 +14,7 @@
 <form action="/AgenciaCentralJSP/ReporteVentasDia" method="post">
 <div class="form-title"><h2>VENTAS DEL DIA</h2></div>
  
-FECHA(dd-MM-aaaa): <input class="form-field" type="date" name="dia" /><br /> 
+FECHA(aaaa-MM-dd): <input class="form-field" type="date" name="dia" /><br /> 
  
 <input class="submit-button" type="submit" value="ENVIAR" name="opt"/>
 <input class="submit-button" type="submit" value="VOLVER" name="opt"/><br />
@@ -24,6 +24,9 @@ FECHA(dd-MM-aaaa): <input class="form-field" type="date" name="dia" /><br />
 String F = (String)session.getAttribute("F");
 if (F!=null){
 	%>
+	<br/> 
+	FUERON ENCONTRADAS LAS SIGUIENTES VENTAS PARA LA FECHA: <%=F%>
+	<br/> 
 	<table border=1 cellpadding=5>
     <tr>
       <th>NÚMERO TICKET</th>
@@ -39,16 +42,21 @@ if (F!=null){
     lista_tickets = (ArrayList <TicketBean>) session.getAttribute("lista_tickets");
 	for (int i = 0; i < lista_tickets.size(); i++) {
 		T= lista_tickets.get(i);
-		%>
-		<tr>
-        	<th><%=T.getNroTicket()%></th>
-        	<th><%=T.getMatricula()%></th>
-        	<th><%=T.getFechaHoraVenta().toString()%></th>
-        	<th><%=T.getImporte()%></th>
-        	<th><%=T.getIdTerminal()%></th>
-        	<th><%=T.getEstado()%></th>
-      	</tr>
-		<%
+		if (T.getFechaHoraVenta().toString().contains(F)){
+		
+			%>
+			<tr>
+	        	<th><%=T.getNroTicket()%></th>
+	        	<th><%=T.getMatricula()%></th>
+	        	<th><%=T.getFechaHoraVenta().toString()%></th>
+	        	<th><%=T.getImporte()%></th>
+	        	<th><%=T.getIdTerminal()%></th>
+	        	<th><%=T.getEstado()%></th>
+	      	</tr>
+			<%
+			
+		}
+		
 	}
 	%></table><%
 }%>
