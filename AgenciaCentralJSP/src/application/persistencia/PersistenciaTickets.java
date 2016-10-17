@@ -14,10 +14,13 @@ import application.managers.ManagerPersistencia;
 public class PersistenciaTickets {
 	
 	private ManagerPersistencia managerPersistencia = ManagerPersistencia.getPersistencia();
-	private Connection connection = managerPersistencia.conexion_agenciadb();
+//	private Connection connection = managerPersistencia.conexion_agenciadb();
+	private Connection connection = null;
 	
-	private PreparedStatement pstmt;
-	 	
+	private PreparedStatement pstmt = null;
+	private ResultSet rs = null;
+	
+	
 	public boolean alta_ticket_BD(TicketBean ticketBean) throws Exception{
 		
 		boolean resultado = false;
@@ -37,6 +40,7 @@ public class PersistenciaTickets {
 				       "values(?,?,?,?,?,?)";
 		
 		try {
+			connection = managerPersistencia.conexion_agenciadb();
 			pstmt = connection.prepareStatement(query);
 			
 			pstmt.setLong(1,nroTicket);
@@ -82,6 +86,7 @@ public class PersistenciaTickets {
 		String SQL= "SELECT "+ columnas + " FROM " + tabla;
 		System.out.println("Consulta a base: "+ SQL);
 		try {
+			connection = managerPersistencia.conexion_agenciadb();
 			pstmt = connection.prepareStatement(SQL);
 			ResultSet rs = pstmt.executeQuery(SQL);
 			while (rs.next()) {
@@ -115,5 +120,79 @@ public class PersistenciaTickets {
 		}
 		return resultado;
 	}
+
+	
+public String get_estado_ticket_BD(long nroTicket){
+		
+		String estado = "";
+		String query = "SELECT estado FROM tickets " + 
+					   "WHERE nroTicket = ?";
+		try{
+			connection = managerPersistencia.conexion_agenciadb();
+			
+			pstmt = connection.prepareStatement(query);
+			
+			pstmt.setLong(1,nroTicket);
+						
+			rs = pstmt.executeQuery();
+						
+			if(rs.next()) {
+				estado = rs.getString("estado");
+			}
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		finally{
+			try{
+				if(rs != null)
+					rs.close();
+				if(pstmt != null)
+					pstmt.close();
+				if (connection != null) 
+					connection.close();
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+	
+		return estado;
+	}
+	
+	public void cancelar_ticket_BD(long nroTicket){
+		
+		try{
+			
+			connection = managerPersistencia.conexion_agenciadb();
+			
+			String query = "UPDATE tickets " +
+				   	   "SET estado = 'CANCELADO' " +
+				       "WHERE nroTicket = ?";
+	
+			pstmt = connection.prepareStatement(query);
+			
+			pstmt.setLong(1, nroTicket);
+		
+			pstmt.executeUpdate();
+			
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		finally{
+			try{
+				if(rs != null)
+					rs.close();
+				if(connection != null) 
+					connection.close();
+				if(pstmt != null)
+					pstmt.close();				
+			}catch(SQLException e) {
+				e.printStackTrace();
+			}
+		}
+}	
+	
 }
 
