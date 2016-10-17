@@ -1,147 +1,3 @@
-//import java.io.BufferedReader;
-//import java.io.IOException;
-//import java.io.InputStreamReader;
-//import java.io.PrintWriter;
-//import java.net.Socket;
-//
-//
-//
-//public class Terminal2 {
-//
-//
-//	/**
-//	 * @param args
-//	 */
-//	public static void main(String[] args) {
-//		// TODO Auto-generated method stub
-//		System.out.println("TERMINAL OO2");
-//		Socket clientSocket;
-//		try {
-//			System.out.println("creando socket en puerto 16000");
-//			clientSocket = new Socket("localhost", 16000);
-//			System.out.println("creado socket en puerto 16000");
-//			
-//			PrintWriter out = new PrintWriter(clientSocket.getOutputStream(), true);
-//			BufferedReader in_consola = new BufferedReader( new InputStreamReader(System.in));
-//			BufferedReader in_servidor = new BufferedReader(new InputStreamReader(clientSocket.getInputStream()));
-//			
-//			boolean AA_OK = false; // Usuario Autenticado y Autorizado
-//			String recibido="null";
-//			String usuario =null;
-//			String password =null; 
-//			String terminal = "002";
-//			
-//			while(!AA_OK){
-//				recibido = in_servidor.readLine();
-//				System.out.println("Recibido: "+recibido);
-//				String[] componentes = recibido.split(" ");
-//				switch (componentes[0]){
-//				case "401":
-//					// Authentication is required and has failed or has not yet been provided
-//					switch(componentes[1]){
-//					case "AAR":// Autenticado y Autrorizado Requerido
-//						System.out.println("Autenticacion / Autorizacion Requeridos");
-//						System.out.println("Ingrese Usuario: "); 
-//						usuario = in_consola.readLine();
-//						System.out.println("Ingrese Password: ");
-//						password = in_consola.readLine();
-//						out.print(usuario+ "\r\n");  
-//						out.print(password + "\r\n");
-//						out.print(terminal+ "\r\n");
-//				        out.flush();
-//						break;
-//					case "UPI":// Usuario Password Incorrecto
-//						System.out.println("Usuario Password Incorrecto");
-//						System.out.println("Ingrese Usuario: "); 
-//						usuario = in_consola.readLine();
-//						System.out.println("Ingrese Password: ");
-//						password = in_consola.readLine();
-//						out.print(usuario+ "\r\n");  
-//						out.print(password + "\r\n");
-//						out.print(terminal+ "\r\n");
-//				        out.flush();
-//						break;
-//					case "TNA":// Terminal No Autorizada
-//						System.out.println("Terminal No Autorizada");
-//						System.out.println("Ingrese Usuario: "); 
-//						usuario = in_consola.readLine();
-//						System.out.println("Ingrese Password: ");
-//						password = in_consola.readLine();
-//						out.print(usuario+ "\r\n");  
-//						out.print(password + "\r\n");
-//						out.print(terminal+ "\r\n");
-//				        out.flush();
-//						break;
-//					};
-//					break;
-//				case "200":
-//					AA_OK=true;
-//					System.out.println("ACCESO AUTORIZADO Y AUTENTICADO ");
-//					break;
-//				}
-//			}
-//			
-//			
-//			
-//			String matricula=null;
-//			String minutos =null;
-//			String opcion = "0";
-//			
-//			while (!opcion.equals("3")){
-//				System.out.println("OPCIONES: ");
-//				System.out.println("1) VENTA DE TICKET");
-//				System.out.println("2) CANCELAR TICKET");
-//				System.out.println("3) SALIR");
-//				opcion = in_consola.readLine();
-//				switch(opcion){
-//				case "1":
-//					System.out.println("Ingrese Matricula");
-//					matricula = in_consola.readLine();
-//					System.out.println("Ingrese Minutos");
-//					minutos = in_consola.readLine();
-//					System.out.println("Fecha de inicio de servicio (dd-mm-aaaa): ");
-//					String fecha_inicio = in_consola.readLine();
-//					System.out.println("Hora de inicio del servicio (HH:mm): ");
-//					String hora_inicio = in_consola.readLine();
-//					out.print(opcion +" "+ matricula +" "+ minutos +" "+ fecha_inicio +" "+hora_inicio+"\r\n");
-//					out.flush();
-//					
-//					recibido = in_servidor.readLine();
-//					System.out.println("Recibido: "+recibido);
-//					String[] componentes = recibido.split(" ");
-//					if (componentes[0].equals("200")){
-//						System.out.println("VENTA EXITOSA");
-//					}else{
-//						System.out.println("VENTA NO EXITOSA");
-//					}
-//					break;
-//					
-//					
-//				case "2":
-//					System.out.println("Ingrese Matricula");
-//					matricula = in_consola.readLine();
-//					System.out.println("Ingrese Minutos");
-//					minutos = in_consola.readLine();
-//					out.print(opcion +" "+ matricula +" "+ minutos + "\r\n");
-//					out.flush();
-//					break;
-//				}
-//
-//			}
-//			out.print(opcion + "\r\n");
-//			out.flush();
-//			clientSocket.close();
-//		} catch (IOException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-//		
-//	}
-//
-//
-//}
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -239,7 +95,7 @@ public class Terminal2 {
 				String minutos ="-";
 				String fecha_inicio="99-99-99";
 				String hora_inicio="99:99";
-				
+				String nroTicket = "";
 				
 				System.out.println("OPCIONES: ");
 				System.out.println("1) VENTA DE TICKET");
@@ -294,12 +150,19 @@ public class Terminal2 {
 					
 					
 				case "2":
-					System.out.println("Ingrese Matricula");
-					matricula = in_consola.readLine();
-					System.out.println("Ingrese Minutos");
-					minutos = in_consola.readLine();
-					out.print(opcion +" "+ matricula +" "+ minutos + "\r\n");
+					System.out.println("Ingrese Nro de Ticket a Cancelar:");
+					nroTicket = in_consola.readLine();
+					out.print(opcion + " " + nroTicket + "\r\n");
 					out.flush();
+					
+					recibido = in_servidor.readLine();
+					System.out.println("Recibido: " + recibido);
+					String[] componentes2 = recibido.split(" ");
+					if (componentes2[0].equals("200")){
+						System.out.println("Ticket " + nroTicket + " cancelado");
+					}else{
+						System.out.println(componentes2[1]);
+					}
 					break;
 				}
 
@@ -387,4 +250,3 @@ public class Terminal2 {
 	}
 
 }
-// Cambio introducido para probar git BLA BLA BLA
