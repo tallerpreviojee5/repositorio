@@ -291,8 +291,10 @@ public Connection establecer_Conexion_IMM(){
 		
 		Long idAgencia = datatypeVenta.getIdAgencia();
 		String matriculaAuto = datatypeVenta.getMatriculaAuto();
-		Date fechaVenta = datatypeVenta.getFechaVenta();
+		Date fechaHoraVenta = datatypeVenta.getFechaVenta();
+		Object sqlFechaHoraVenta = new java.sql.Timestamp(fechaHoraVenta.getTime());
 		Date fechaInicioServicio = datatypeVenta.getFechaInicioServicio();
+		Object sqlFechaInicioServicio = new java.sql.Timestamp(fechaInicioServicio.getTime());
 		Integer minutos = datatypeVenta.getMinutos();
 		Long idTransaccion = datatypeVenta.getNroTicket();
 		Long importe = datatypeVenta.getImporte();
@@ -300,14 +302,18 @@ public Connection establecer_Conexion_IMM(){
 		
 		Connection con = null;
 		PreparedStatement pstmt = null;
+		
+		System.out.println("Fecha y hora de venta: " + sqlFechaHoraVenta.toString());
+		System.out.println("Fecha y hora de Inicio de Servicio: " + sqlFechaInicioServicio.toString());
+		
 		try {
 			con=establecer_Conexion_IMM();	
 	        String insertQuery = "INSERT INTO transacciones (IdAgencia, MatriculaAuto, FechaVenta, FechaInicioServicio, Minutos, Importe, Estado) VALUES(?, ?, ?, ?, ?, ?, ?)";
 	        pstmt = con.prepareStatement(insertQuery, Statement.RETURN_GENERATED_KEYS);
 	        pstmt.setFloat(1, idAgencia);
 	        pstmt.setString(2, matriculaAuto);
-	        pstmt.setString(3, fechaVenta.toString());
-	        pstmt.setString(4, fechaInicioServicio.toString());
+	        pstmt.setObject(3, sqlFechaHoraVenta);
+	        pstmt.setObject(4, sqlFechaInicioServicio);
 	        pstmt.setInt(5, minutos);
 	        pstmt.setFloat(6, importe);
 	        pstmt.setString(7, estado);

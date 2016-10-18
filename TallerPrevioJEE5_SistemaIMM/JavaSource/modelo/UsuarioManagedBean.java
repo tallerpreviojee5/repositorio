@@ -25,12 +25,15 @@ public class UsuarioManagedBean {
 		return usuario;
 	}
 	
-	public boolean accion(){
+	public String accion(){
 		System.out.println("Usuario: " + usuario.getNombre());
 		System.out.println("Secreto: " + usuario.getSecreto());
 		ManagerPersistencia managerPersistencia = ManagerPersistencia.getInstance();
 		managerPersistencia.probarConexion();
-		return managerPersistencia.AutenticarUsuario(usuario);
+		if (managerPersistencia.AutenticarUsuario(usuario))
+			return "menu.jsp";
+		else
+			return "index.jsp";
 	}
 
 	public void setUsuario(Usuario usuario) {
