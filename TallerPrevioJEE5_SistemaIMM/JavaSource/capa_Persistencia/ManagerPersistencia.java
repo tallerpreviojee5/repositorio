@@ -18,7 +18,9 @@ import webserviceIMM.DatatypeVenta;
 import capa_Negocio.ManagerTransacciones;
 import capa_Negocio.DatatypeAgencias;
 import capa_Negocio.DatatypeUsuarios;
+import modelo.DatatypeRegistroTickets;
 import modelo.Usuario;
+import modelo.Tabla;
 
 
 public class ManagerPersistencia {
@@ -34,7 +36,78 @@ public class ManagerPersistencia {
 		 return managerPersistencia;
 	}
 	
+	public Tabla getColeccionTickets(){
+		System.out.println("metodo ManagerPersistencia.getColeccionTickets");
+		Tabla coleccion_Tickets = new Tabla();
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			con=establecer_Conexion_IMM();
+			stmt = con.createStatement();
+			rs = stmt.executeQuery("SELECT * FROM transacciones where FechaInicioServicio >= '2016/10/16 00:00:00' and FechaInicioServicio <= '2016/10/20 23:59:59' ");
+			ResultSetMetaData rsm = rs.getMetaData();
+			
+			Long nroTicket;
+			Long idAgencia;
+			String matriculaAuto;
+			Date fechaHoraVenta;
+			Date fechaInicioServicio;
+			Integer minutos;
+			Long importe;
+			String estado;
+		
+					
+			while(rs.next()) {
+				
+				DatatypeRegistroTickets datatype_RegistroTickets = new DatatypeRegistroTickets();
+				nroTicket = rs.getLong("NroTicket");
+				idAgencia = rs.getLong("idAgencia");
+				matriculaAuto = rs.getString("MatriculaAuto");
+				fechaHoraVenta = rs.getTimestamp("FechaVenta");
+				fechaInicioServicio = rs.getTimestamp("FechaInicioServicio");
+				minutos = rs.getInt("Minutos");
+				importe = rs.getLong("Importe");
+				estado = rs.getString("Estado");
+				
+				datatype_RegistroTickets.setNroTicket(nroTicket);
+				datatype_RegistroTickets.setIdAgencia(idAgencia);
+				datatype_RegistroTickets.setMatriculaAuto(matriculaAuto);
+				datatype_RegistroTickets.setFechaVenta(fechaHoraVenta);
+				datatype_RegistroTickets.setFechaInicioServicio(fechaInicioServicio);
+				datatype_RegistroTickets.setMinutos(minutos);
+				datatype_RegistroTickets.setImporte(importe);
+				datatype_RegistroTickets.setEstado(estado);
+				
+				coleccion_Tickets.getRegistrosTickets().add(datatype_RegistroTickets);
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+			
+		} catch(SQLException e) {
+			System.out.println("SQLException: "+e.getMessage());
 
+		} catch(Exception e) {
+			System.out.println("Exception: "+e.getMessage());
+			
+		}
+		finally {
+			try {
+				if (rs!=null) rs.close();
+				if (stmt!=null)	stmt.close();
+				if (con!=null) con.close();
+//				System.out.println("Recursos liberados correctamente luego de obtener la coleccion de alquileres");
+			} catch (SQLException e) {
+				System.out.println("Ocurrio un error al liberar los recursos luego de obtener la coleccion de alquileres");
+				e.printStackTrace();
+			}
+
+		}
+	
+		return coleccion_Tickets;
+	}
+	
 	
 	public boolean AutenticarUsuario(modelo.Usuario usuario){
 		Hashtable coleccion_usuarios = managerPersistencia.getColeccionUsuarios();
@@ -219,7 +292,7 @@ public class ManagerPersistencia {
 			DataSource ds = (DataSource) initialContext.lookup("java:/tallerpreviojee5agenciasDS");
 			con = ds.getConnection();
 			System.out.println(con.toString());
-			System.out.println("***Conectado OK!!!***");
+			System.out.println("***Conectado a base tallerpreviojee5agencias OK!!!***");
 		}catch (SQLException e){
 			System.out.println("Error al obtener la conexion: " + e.getMessage());
 		}catch (NamingException e1){
@@ -253,7 +326,7 @@ public Connection establecer_Conexion_Usuarios(){
 			DataSource ds = (DataSource) initialContext.lookup("java:/usuariosIMM_DS");
 			con = ds.getConnection();
 			System.out.println(con.toString());
-			System.out.println("***Conectado OK!!!***");
+			System.out.println("***Conectado a base usuariosIMM OK!!!***");
 		}catch (SQLException e){
 			System.out.println("Error al obtener la conexion: " + e.getMessage());
 		}catch (NamingException e1){
@@ -278,7 +351,7 @@ public Connection establecer_Conexion_IMM(){
 			DataSource ds = (DataSource) initialContext.lookup("java:/tallerpreviojee5DS");
 			con = ds.getConnection();
 			System.out.println(con.toString());
-			System.out.println("***Conectado OK!!!***");
+			System.out.println("***Conectado a base tallerpreviojee5 OK!!!***");
 		}catch (SQLException e){
 			System.out.println("Error al obtener la conexion: " + e.getMessage());
 		}catch (NamingException e1){
