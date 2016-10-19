@@ -349,8 +349,8 @@ public Connection establecer_Conexion_IMM(){
 		return datatypeVenta;
 	}
 
-public void cancelarTicket(long NroTicket){
-		
+public boolean cancelarTicket(long NroTicket){
+		boolean resultado = false;
 		Connection connection = null;
 		PreparedStatement pstmt = null;
 				
@@ -365,7 +365,16 @@ public void cancelarTicket(long NroTicket){
 			
 			pstmt.setLong(1, NroTicket);
 		
-			pstmt.executeUpdate();
+			if(pstmt.executeUpdate() > 0){
+				
+				resultado = true;
+				System.out.println("[SistemaImm][ManagerPersistencia]Cancelado ticket Nro " + NroTicket);
+				
+			}else{
+				
+				System.out.println("[SistemaImm][ManagerPersistencia]Error al cancelar ticket Nro " + NroTicket);
+			
+			}
 			
 		}catch(Exception e){
 			e.printStackTrace();
@@ -381,6 +390,8 @@ public void cancelarTicket(long NroTicket){
 				e.printStackTrace();
 			}
 		}
+		
+		return resultado;
 }	
 	
 }

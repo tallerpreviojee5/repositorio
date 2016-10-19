@@ -156,13 +156,21 @@ public class Terminal2 {
 					out.flush();
 					
 					recibido = in_servidor.readLine();
-					System.out.println("Recibido: " + recibido);
 					String[] componentes2 = recibido.split(" ");
-					if (componentes2[0].equals("200")){
-						System.out.println("Ticket " + nroTicket + " cancelado");
+					
+					if(componentes2[0].equals("200")){
+						
+						System.out.println("Ticket Nro " + nroTicket + " cancelado");
+					
+					}else if(componentes2[0].equals("500")){
+						
+						System.out.println("Error al cancelar ticket Nro " + nroTicket);
+						System.out.println("Vendido por otra agencia o ya cancelado");
+					
 					}else{
-						System.out.println(componentes2[1]);
+						System.out.println("Error al cancelar ticket Nro " + nroTicket);
 					}
+					
 					break;
 				}
 

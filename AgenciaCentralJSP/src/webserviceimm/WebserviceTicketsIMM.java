@@ -28,11 +28,14 @@ public interface WebserviceTicketsIMM {
      * @param arg2
      * @param arg1
      * @param arg0
+     * @return
+     *     returns boolean
      */
     @WebMethod(operationName = "CancelarTicket")
+    @WebResult(targetNamespace = "")
     @RequestWrapper(localName = "CancelarTicket", targetNamespace = "http://webserviceIMM/", className = "webserviceimm.CancelarTicket")
     @ResponseWrapper(localName = "CancelarTicketResponse", targetNamespace = "http://webserviceIMM/", className = "webserviceimm.CancelarTicketResponse")
-    public void cancelarTicket(
+    public boolean cancelarTicket(
         @WebParam(name = "arg0", targetNamespace = "")
         long arg0,
         @WebParam(name = "arg1", targetNamespace = "")

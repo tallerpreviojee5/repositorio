@@ -11,12 +11,26 @@ public class WebserviceTicketsIMM {
 		return managerTransacciones.Venta(dataTypeVenta);
 	}
 	
-	public void CancelarTicket(long NroTicket, long idAgencia, String secretoAgencia){
+	public boolean CancelarTicket(long NroTicket, long idAgencia, String secretoAgencia){
 		
-		ManagerTransacciones managerTransacciones = ManagerTransacciones.getInstance();
+		boolean resultado = false;
 		
-		managerTransacciones.cancelarTicket(NroTicket, idAgencia, secretoAgencia);
+		try{
+			
+			ManagerTransacciones managerTransacciones = ManagerTransacciones.getInstance();
 		
+			if(managerTransacciones.cancelarTicket(NroTicket, idAgencia, secretoAgencia)){
+				resultado = true;
+				System.out.println("[SistemaImm][WebserviceTickets]Cancelado ticket Nro " + NroTicket);
+			}else{
+				System.out.println("[SistemaImm][WebserviceTickets]Error al cancelar ticket Nro " + NroTicket);
+			}
+		
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return resultado;
 	}
 
 }

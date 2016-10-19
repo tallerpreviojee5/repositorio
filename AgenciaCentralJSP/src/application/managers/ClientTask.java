@@ -368,18 +368,19 @@ public class ClientTask implements Runnable {
 					break;
 				case "2":
 					String str_nroTicket = componentes[1];
-					System.out.println("Ingreso de cancelacion de ticket:");
-					System.out.println("Nro de ticket: " + componentes[1]);
-					
 					long NroTicket = Long.parseLong(str_nroTicket);
 					
 					if(validarTicket(NroTicket)){
-						CancelarTicketIMM(NroTicket,idAgencia,"secreto");
-						managerTickets.cancelarTicket(NroTicket);
-						out.println(code_200);
+						if(CancelarTicketIMM(NroTicket,idAgencia,"secreto")){
+							managerTickets.cancelarTicket(NroTicket);
+							out.println(code_200);
+						}else{
+							out.println(code_500);
+							System.out.println("[AgenciaCentral][ClientTask][run]Error al cancelar ticket Nro: " + NroTicket);
+						}
 					}else{
-						String msj_error = "Numero_ticket_invalido_o_ya_cancelado";
-						out.println(code_500 + " " + msj_error);
+						out.println(code_500);
+						System.out.println("[AgenciaCentral][ClientTask][run]Error al validar ticket Nro: " + NroTicket);
 					}
 					break;
 				case "3":
@@ -462,12 +463,20 @@ public class ClientTask implements Runnable {
 		
 		boolean resultado = true;
 		
-		managerTickets = new ManagerTickets();
+		try{
+			managerTickets = new ManagerTickets();
+			
+			String estado = managerTickets.getEstadoTicket(nroTicket);
+			
+			if((!estado.equalsIgnoreCase("ACTIVO")) || (estado == null) || (estado.isEmpty())){
+				resultado = false;
+				System.out.println("[AgenciaCentral][ClientTask][validarTicket]Ticket Nro: " + nroTicket + " NO validado");
+			}else{
+				System.out.println("[AgenciaCentral][ClientTask][validarTicket]Ticket Nro: " + nroTicket + " validado");
+			}
 		
-		String estado = managerTickets.getEstadoTicket(nroTicket);
-		
-		if((estado.isEmpty()) || (!estado.equalsIgnoreCase("ACTIVO"))){
-			resultado = false;
+		}catch(Exception e){
+			e.printStackTrace();
 		}
 		
 		return resultado;
@@ -482,9 +491,24 @@ public class ClientTask implements Runnable {
 		return datatypeVentaResponse;
 	}
 	
-	private void CancelarTicketIMM(long NroTicket, long idAgencia, String secreto){
-		WebserviceTicketsIMMService wsTicketImmService = new WebserviceTicketsIMMService();
-		WebserviceTicketsIMM wsTicketImm = wsTicketImmService.getWebserviceTicketsIMMPort();
-		wsTicketImm.cancelarTicket(NroTicket, idAgencia, secreto);
+	private boolean CancelarTicketIMM(long NroTicket, long idAgencia, String secreto){
+		
+		boolean resultado = false;
+		
+		try{
+			WebserviceTicketsIMMService wsTicketImmService = new WebserviceTicketsIMMService();
+			WebserviceTicketsIMM wsTicketImm = wsTicketImmService.getWebserviceTicketsIMMPort();
+		
+			if(wsTicketImm.cancelarTicket(NroTicket, idAgencia, secreto)){
+				resultado = true;
+				System.out.println("[AgenciaCentral][ClientTask]Cancelado ticket Nro: " + NroTicket);
+			}else{
+				System.out.println("[AgenciaCentral][ClientTask][CancelarTicketIMM]Error al cancelar ticket Nro: " + NroTicket);
+			}
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+		
+		return resultado;
 	}
 }
