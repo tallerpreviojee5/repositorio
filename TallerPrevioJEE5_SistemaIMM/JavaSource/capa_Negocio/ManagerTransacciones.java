@@ -56,18 +56,30 @@ public class ManagerTransacciones {
 		return importe;
 	}
 	
-	public void cancelarTicket(long NroTicket, long idAgencia, String secretoAgencia){
+	public boolean cancelarTicket(long NroTicket, long idAgencia, String secretoAgencia){
 		
-		if(AutenticarAgencia(idAgencia, secretoAgencia)){
+		boolean resultado = false;
+		
+		try {
+			if(AutenticarAgencia(idAgencia, secretoAgencia)){
 			
-			ManagerPersistencia managerPersistencia = ManagerPersistencia.getInstance();
+				ManagerPersistencia managerPersistencia = ManagerPersistencia.getInstance();
+				
+				if(managerPersistencia.cancelarTicket(NroTicket)){
+					resultado = true;
+					System.out.println("[SistemaImm][ManagerTransacciones]Cancelado ticket Nro " + NroTicket);
+				}else{
+					System.out.println("[SistemaImm][ManagerTransacciones]Error al cancelar ticket Nro " + NroTicket);
+				}
 			
-			try {
-				managerPersistencia.cancelarTicket(NroTicket);
-			} catch (Exception e) {
-				e.printStackTrace();
+			}else{
+				System.out.println("[SistemaImm][ManagerTransacciones]Error al autenticar agencia en cancelarTicket Nro " + NroTicket + " con Agencia " + idAgencia);
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
+		
+		return resultado;
 		
 }	
 	
