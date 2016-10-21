@@ -35,7 +35,10 @@ public class UsuarioManagedBean {
 		else
 			return "index.jsp";
 	}
+	
 
+	
+	
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}

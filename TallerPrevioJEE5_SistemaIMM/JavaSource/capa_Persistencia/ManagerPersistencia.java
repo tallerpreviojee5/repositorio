@@ -36,6 +36,85 @@ public class ManagerPersistencia {
 		 return managerPersistencia;
 	}
 	
+	public Tabla getColeccionTicketsPorMes(String anio_mes) {
+		System.out.println("metodo ManagerPersistencia.getColeccionTicketsPorMes");
+		Tabla coleccion_Tickets = new Tabla();
+		Connection con = null;
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			con=establecer_Conexion_IMM();
+			stmt = con.createStatement();
+			String fechainicio = anio_mes + "/01 00:00:00";
+			String fechafin = anio_mes + "/30 23:59:59";
+			System.out.println("Fecha de inicio: " + fechainicio);
+			System.out.println("Fecha de fin: " + fechafin);
+//			fechainicio = "2016/10/01 00:00:00";
+//			fechafin = "2016/10/31 23:59:59";
+			rs = stmt.executeQuery("SELECT * FROM transacciones where FechaInicioServicio >= '" + fechainicio + "' and FechaInicioServicio <= '" + fechafin + "'" );
+//			rs = stmt.executeQuery("SELECT * FROM transacciones where FechaInicioServicio >= '2016/10/16 00:00:00' and FechaInicioServicio <= '2016/10/20 23:59:59' ");
+//			rs = stmt.executeQuery("SELECT * FROM transacciones");
+			ResultSetMetaData rsm = rs.getMetaData();
+			
+			Long nroTicket;
+			Long idAgencia;
+			String matriculaAuto;
+			Date fechaHoraVenta;
+			Date fechaInicioServicio;
+			Integer minutos;
+			Long importe;
+			String estado;
+		
+					
+			while(rs.next()) {
+				
+				DatatypeRegistroTickets datatype_RegistroTickets = new DatatypeRegistroTickets();
+				nroTicket = rs.getLong("NroTicket");
+				idAgencia = rs.getLong("idAgencia");
+				matriculaAuto = rs.getString("MatriculaAuto");
+				fechaHoraVenta = rs.getTimestamp("FechaVenta");
+				fechaInicioServicio = rs.getTimestamp("FechaInicioServicio");
+				minutos = rs.getInt("Minutos");
+				importe = rs.getLong("Importe");
+				estado = rs.getString("Estado");
+				
+				datatype_RegistroTickets.setNroTicket(nroTicket);
+				datatype_RegistroTickets.setIdAgencia(idAgencia);
+				datatype_RegistroTickets.setMatriculaAuto(matriculaAuto);
+				datatype_RegistroTickets.setFechaVenta(fechaHoraVenta);
+				datatype_RegistroTickets.setFechaInicioServicio(fechaInicioServicio);
+				datatype_RegistroTickets.setMinutos(minutos);
+				datatype_RegistroTickets.setImporte(importe);
+				datatype_RegistroTickets.setEstado(estado);
+				
+				coleccion_Tickets.getRegistrosTickets().add(datatype_RegistroTickets);
+			}
+			rs.close();
+			stmt.close();
+			con.close();
+			
+		} catch(SQLException e) {
+			System.out.println("SQLException: "+e.getMessage());
+
+		} catch(Exception e) {
+			System.out.println("Exception: "+e.getMessage());
+			
+		}
+		finally {
+			try {
+				if (rs!=null) rs.close();
+				if (stmt!=null)	stmt.close();
+				if (con!=null) con.close();
+			} catch (SQLException e) {
+				System.out.println("Ocurrio un error al liberar los recursos luego de obtener la coleccion de alquileres");
+				e.printStackTrace();
+			}
+
+		}
+	
+		return coleccion_Tickets;
+	}	
+			
 	public Tabla getColeccionTickets(){
 		System.out.println("metodo ManagerPersistencia.getColeccionTickets");
 		Tabla coleccion_Tickets = new Tabla();
@@ -45,7 +124,9 @@ public class ManagerPersistencia {
 		try {
 			con=establecer_Conexion_IMM();
 			stmt = con.createStatement();
-			rs = stmt.executeQuery("SELECT * FROM transacciones where FechaInicioServicio >= '2016/10/16 00:00:00' and FechaInicioServicio <= '2016/10/20 23:59:59' ");
+//			rs = stmt.executeQuery("SELECT * FROM transacciones where FechaInicioServicio >= '2016/10/16 00:00:00' and FechaInicioServicio <= '2016/10/20 23:59:59' ");
+			
+			rs = stmt.executeQuery("SELECT * FROM transacciones");
 			ResultSetMetaData rsm = rs.getMetaData();
 			
 			Long nroTicket;
@@ -465,6 +546,6 @@ public boolean cancelarTicket(long NroTicket){
 		}
 		
 		return resultado;
-}	
-	
+}
+
 }

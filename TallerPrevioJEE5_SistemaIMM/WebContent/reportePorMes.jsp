@@ -9,31 +9,23 @@
 </head>
 <body>
 <f:view>
-
 <h:form>
-
 		<h:messages showDetail="false" showSummary="true"/>
-		
-		<h:panelGrid columns="2">
-			<h:selectOneMenu value="#{tablaManagedBean.combo1}">
-				<f:selectItem itemValue="ReportePorMes" itemLabel="Reporte por mes" />
-				<f:selectItem itemValue="ReportePorRango" itemLabel="Reporte por rango de fechas" />
-				
-			</h:selectOneMenu>
-			<h:commandButton action="#{tablaManagedBean.accioncombo1}" value="Enviar" />	
-		</h:panelGrid>
-		
-		
 		<h:panelGrid columns="1">
-
-		<h:outputText value="Tabla completa de registros de Tickets" />
-		
-
+			<h:outputText value="Reporte por Mes" />
 		</h:panelGrid>
+
 		
-		<h:panelGrid columns="8">
+		<h:messages showDetail="false" showSummary="true"/>
+		<h:panelGrid columns="3">
+			<h:outputText value="Ingrese año y mes aaaa/mm" />
+ 			<h:inputText  value="#{reportePorMesManagedBean.anio_mes}" required="true"
+ 			requiredMessage="Debe ingresar año y mes"/> 
+ 			<h:commandButton action="#{reportePorMesManagedBean.accion}" value="Enviar" />
+ 		</h:panelGrid>
+ 				<h:panelGrid columns="8">
 	
-		<h:dataTable value="#{tablaManagedBean.tabla.registrosTickets}" var="tickets" border = "1">
+		<h:dataTable value="#{reportePorMesManagedBean.tabla.registrosTickets}" var="tickets" border = "1">
 		<h:column>
 			<f:facet name="header"> 
 				<h:outputText value = "Nro Ticket"/>
@@ -92,11 +84,12 @@
 		</h:dataTable>
 		</h:panelGrid>
 
-	<h:commandButton value="Volver" action="index.jsp" type="submit" /> 
-		
-</h:form>
+	<h:commandButton value="Volver" action="menu.jsp" type="submit" /> 
+ 		
+ 		
 
-
+ 		
+</h:form>		
 </f:view>
 </body>
 </html>
