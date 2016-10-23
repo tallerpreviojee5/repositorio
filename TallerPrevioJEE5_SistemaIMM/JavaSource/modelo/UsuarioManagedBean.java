@@ -12,6 +12,7 @@ import modelo.Usuario;
 @RequestScoped
 public class UsuarioManagedBean {
 	private Usuario usuario = new Usuario();
+		
 
 	public UsuarioManagedBean(){
 //		usuario.setNombre("nombreUsuario");
@@ -20,6 +21,7 @@ public class UsuarioManagedBean {
 //		
 //		usuario.getTelefonos().add("telefono-1");
 //		usuario.getTelefonos().add("telefono-2");
+
 	}
 	public Usuario getUsuario() {
 		return usuario;
@@ -30,10 +32,14 @@ public class UsuarioManagedBean {
 		System.out.println("Secreto: " + usuario.getSecreto());
 		ManagerPersistencia managerPersistencia = ManagerPersistencia.getInstance();
 		managerPersistencia.probarConexion();
-		if (managerPersistencia.AutenticarUsuario(usuario))
+		if (managerPersistencia.AutenticarUsuario(usuario)) {
+
 			return "menu.jsp";
-		else
+		}
+		else {
+
 			return "index.jsp";
+		}
 	}
 	
 

@@ -25,5 +25,5 @@
     <servlet-name>Servlet_WebserviceTickets</servlet-name>
     <url-pattern>/WebserviceTicketsIMM</url-pattern>
   </servlet-mapping>  
- 
+
 </web-app>

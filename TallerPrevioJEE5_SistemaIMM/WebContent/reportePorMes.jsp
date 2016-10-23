@@ -12,7 +12,7 @@
 <h:form>
 		<h:messages showDetail="false" showSummary="true"/>
 		<h:panelGrid columns="1">
-			<h:outputText value="Reporte por Mes" />
+			<h2>Reporte por Mes</h2>
 		</h:panelGrid>
 
 		

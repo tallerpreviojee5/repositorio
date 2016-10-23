@@ -92,7 +92,7 @@
 		</h:dataTable>
 		</h:panelGrid>
 
-	<h:commandButton value="Volver" action="index.jsp" type="submit" /> 
+	<h:commandButton value="Salir" action="index.jsp" type="submit" /> 
 		
 </h:form>
 
